@@ -1,13 +1,27 @@
 import requests
+import parsing
+import data
 from pandas import *
 import json
 
-def searchCurr(coin):
-    response = requests.get('https://portal.coinroutes.com/api/currency_pairs/', headers={'Authorization':'TOKEN 6c634e1eacecc4801b000249287fbf923d5c8824'})
-    for header in response.json():
-        print(header)
-        if(header['slug'] == coin):
-            print(header)
+activeCoins = [] #Stores the id's of coins currently in view
+
+def searchCurr(coins):
+    global currency
+    for coin in coins:
+        data.coinValue(coin, currency)
+
+currency = input("Currency\n")
 
 query = input("Search coin\n")
-searchCurr(query)
+query = query.split(',')
+for coin in query:
+    activeCoins.append(coin)
+
+#searchCurr(activeCoins)
+
+
+
+
+
+
