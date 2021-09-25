@@ -10,16 +10,16 @@ gecko = pcg.CoinGeckoAPI()
 #View all coins
 #print(gecko.get_coins_list())
 
-def searchCoin(id, currency):
-    #for id in coins_dict:
-    coin = gecko.get_coin_by_id(id)
-    price = gecko.get_price(ids=id, vs_currencies=currency)
-    print(id.capitalize())
-    print('$' + str(price[id][currency]))
-    #print('Current Value:', '$' + str(coin['market_data']['current_price']['usd']))
-    #print(coin['symbol'].upper())
-    #print(coin['tickers'])
-    print('------------')
+def searchCoin(coins, currency):
+    for id in coins:
+        coin = gecko.get_coin_by_id(id)
+        price = gecko.get_price(ids=id, vs_currencies=currency)
+        print(id.capitalize())
+        print('$' + str(price[id][currency]))
+        #print('Current Value:', '$' + str(coin['market_data']['current_price']['usd']))
+        #print(coin['symbol'].upper())
+        #print(coin['tickers'])
+        print('------------')
 
 #View fields of coin
 #coin = gecko.get_coin_by_id('bitcoin')

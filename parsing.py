@@ -4,33 +4,26 @@ import data
 import main
 
 commands_Dict = {
-    '-search':{
+    '-search': {
         'Desc': 'Search for coin(s).',
         'minArgs': 1,
         'maxArgs': 5,
-        'SUBS': {},
+        'SUBS': {
+            '-c': {
+                'Desc': 'Specific coin category lookup',
+                'minArgs': 0,
+                'maxArgs': 33,
+                'syntax': None,
+                'help': '[fields]'
+            }
+        },
         'Help': '[coinID]'
     },
     '-currency':{
         'Desc': 'Manage primary currency.',
         'minArgs': 1,
         'maxArgs': 2,
-        'SUBS': {
-            '-v':{
-                'Desc': 'View current currency',
-                'minArgs': 0,
-                'maxArgs': 0,
-                'syntax': None,
-                'help': '-v'
-            },
-            '-c':{
-                'Desc': 'Change current currency',
-                'minArgs': 1,
-                'maxArgs': 1,
-                'syntax': [str],
-                'help': '-v'
-            }
-        },
+        'SUBS': {},
         'Help': '[subCommand] [args]'
     },
     '-help': {
@@ -42,14 +35,46 @@ commands_Dict = {
     }
 }
 
+def searchCoin(splits):
+    for split in splits:
+        if split != splits[0] and not split.__contains__('-'):
+            print(split)
+            main.activeCoins.append(split)
+    data.searchCoin(main.activeCoins, main.currency)
+
+def manageCurrency(splits):
+    cmd = splits[0]
+    splits.remove(splits[0])
+    for split in splits:
+        if split.__contains__('-v'):
+            print('has v')
+            splits.remove(split)
+            if len(splits) == 0:
+                print('Current Currency: ' + main.currency)
+            else:
+                print('Invalid syntax, proper usage:', cmd, commands_Dict[cmd]['Help'])
+        if split.__contains__('-c'):
+            splits.remove(split)
+            if len(splits) == 1:
+                for split in splits:
+                    main.currency = split
+                    print('Changed primary currency to', main.currency)
+            else:
+                print('Invalid syntax, proper usage:', cmd, commands_Dict[cmd]['Help'])
+
+
+
 
 def validateCommand():
     global command
     #Split command input into pieces where split[0] is main command
     splits = command.split(' ')
+    cmd = splits[0]
     args = len(splits)-1
-    if (args < commands_Dict[splits[0]]['minArgs'] or args > commands_Dict[splits[0]]['maxArgs']):
-        print('Improper syntax, proper usage:', splits[0], commands_Dict[splits[0]]['Help'])
+    if (args < commands_Dict[cmd]['minArgs'] or args > commands_Dict[cmd]['maxArgs']):
+        print('Improper syntax, proper usage:', cmd, commands_Dict[cmd]['Help'])
+    else:
+        return True
 
 
 def commands():
@@ -58,14 +83,19 @@ def commands():
     cmd = splits[0]
     if commands_Dict.__contains__(cmd):
         if (cmd == '-help'):
-            print("\nCommands")
-            for command in commands_Dict:
-                print('\t', command, ':', commands_Dict[command]['Desc'], 'Usage:', commands_Dict[command]['Help'])
-            #for comm in commands_dict:
-            #    print('\t', comm, ':', commands_dict[comm])
-            validateCommand()
+            if(validateCommand()):
+                print("\nCommands")
+                for command in commands_Dict:
+                    print('\t', command, ':', commands_Dict[command]['Desc'], 'Usage:', commands_Dict[command]['Help'])
+                #for comm in commands_dict:
+                #    print('\t', comm, ':', commands_dict[comm])
         if (cmd == '-search'):
-            validateCommand()
+            if(validateCommand()):
+                searchCoin(splits)
+        if (cmd == '-currency'):
+            if(validateCommand()):
+                manageCurrency(splits)
+
     else:
         print('Command', command, 'does not exist\n')
     waitCommand()
@@ -76,7 +106,5 @@ def waitCommand():
     command = input('')
     commands()
 
-
-print("Welcome to CoinRoute Tracker\n")
-
+main.init()
 waitCommand()
