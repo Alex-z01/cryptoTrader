@@ -1,4 +1,6 @@
 import operator # might need
+
+import calc
 import data
 import main
 
@@ -39,6 +41,27 @@ commands_Dict = {
         'SUBS': {},
         'Help': '[pairID]'
     },
+    '-bid':{
+        'Desc': 'Switch pair side param to bids',
+        'minArgs': 0,
+        'maxArgs': 0,
+        'SUBS': {},
+        'Help': '-bid'
+    },
+    '-ask':{
+        'Desc': 'Switch pair side param to asks',
+        'minArgs': 0,
+        'maxArgs': 0,
+        'SUBS': {},
+        'Help': '-ask'
+    },
+    '-q': {
+        'Desc': 'Change pair quantity param',
+        'minArgs': 1,
+        'maxArgs': 1,
+        'SUBS': {},
+        'Help': '[int]'
+    },
     '-info':{
         'Desc': 'Get coin specific info.',
         'minArgs': 1,
@@ -54,6 +77,19 @@ commands_Dict = {
         'Help': '-help'
     }
 }
+
+def quantity(splits):
+    splits.remove(splits[0])
+    main.pairQuantity = splits[0]
+    print('Pair quantity param changed to', main.pairQuantity)
+
+def bidsSide():
+    calc.side = 'bids'
+    print('Pair side param changed to bids')
+
+def asksSide():
+    calc.side = 'asks'
+    print('Pair side param changed to asks')
 
 def checkPair(splits):
     splits.remove(splits[0])
@@ -135,6 +171,16 @@ def commands():
         if (cmd == '-pair'):
             if(validateCommand()):
                 checkPair(splits)
+        if cmd == '-bid':
+            if validateCommand():
+                bidsSide()
+        if cmd == '-ask':
+            if validateCommand():
+                asksSide()
+        if cmd == '-q':
+            if validateCommand():
+                quantity(splits)
+
     else:
         print('Command', command, 'does not exist\n')
     waitCommand()

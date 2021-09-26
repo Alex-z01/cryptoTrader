@@ -27,6 +27,7 @@ def watch(id):
     coinInfo(id)
 
 def searchCoin(coins, currency):
+    main.activeCoins = []
     for id in coins:
         coin = gecko.get_coin_by_id(id)
         price = gecko.get_price(ids=id, vs_currencies=currency)

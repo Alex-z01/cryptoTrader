@@ -3,6 +3,9 @@ import json
 import requests
 import os
 
+import main
+
+
 class Client(object):
 
     token = os.environ.get('SOR_TOKEN',"6c634e1eacecc4801b000249287fbf923d5c8824") # coinroutes portal API token
@@ -23,9 +26,9 @@ class Client(object):
         global pair
         req = {
         "currency_pair": pair,  # currency pair to get prices for
-        "exchanges": ["gdax","gemini","itbit","kraken","bitstamp"],  # exchanges to include in the cost calculation
-        "side": "asks",  # "asks" is for the buy price, "bids" is for the sell price
-        "quantity": 100,  # quantity of the target currency to get the price for
+        "exchanges": main.exchangesList,  # exchanges to include in the cost calculation
+        "side": side,  # "asks" is for the buy price, "bids" is for the sell price
+        "quantity": main.pairQuantity,  # quantity of the target currency to get the price for
         "levels": 1000,  # number of price levels to consider.  Defaults to 1000 which is sufficient for most use cases
 
         # This is the name of the strategy to use for calculating available balances
@@ -62,10 +65,11 @@ class Client(object):
         sell_cost = sell_first_price - sell_avg_price
 
         print("Buy Cost: {} Sell Cost: {}".format(buy_cost, sell_cost))
-        print("Exchanges: {}".format())
-        print("Quantity: {}")
+        print("Exchanges: {}".format(main.exchangesList))
+        print("Quantity: {}".format(main.pairQuantity))
+        print("Side: {}".format(side))
 
-
+side = 'asks'
 pair = 'BTC-USD'
 def initRun():
     c = Client()

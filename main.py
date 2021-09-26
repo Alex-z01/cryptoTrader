@@ -9,11 +9,11 @@ pairList = ['BTC-AUD', 'ETH-AUD', 'LTC-AUD', 'XRP-AUD', 'BCH-AUD', 'USDT-AUD', '
 
         'BTC-USD']
 exchangesList = ["gdax","gemini","itbit","kraken","bitstamp"]
-currency = ''
+pairQuantity = 100
+currency = 'usd'
 
 def init():
     global currency
-    currency = input("Input your primary currency\n")
     print("Welcome to CoinRoute Tracker\ntype '-help' to begin")
 
 
