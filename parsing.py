@@ -1,5 +1,4 @@
 import operator
-
 import data
 import main
 
@@ -26,6 +25,20 @@ commands_Dict = {
         'SUBS': {},
         'Help': '[subCommand] [args]'
     },
+    '-watch':{
+        'Desc': 'Watch crypto in realtime.',
+        'minArgs': 1,
+        'maxArgs': 1,
+        'SUBS': {},
+        'Help': '[coinID]'
+    },
+    '-info':{
+        'Desc': 'Get coin specific info.',
+        'minArgs': 1,
+        'maxArgs': 1,
+        'SUBS': {},
+        'Help': '[coinID]'
+    },
     '-help': {
         'Desc': 'View commands',
         'minArgs': 0,
@@ -35,10 +48,19 @@ commands_Dict = {
     }
 }
 
+def watch(splits):
+    for split in splits:
+        if split != splits[0]:
+            data.watch(split)
+
+def coinInfo(splits):
+    for split in splits:
+        if split != splits[0]:
+            data.coinInfo(split)
+
 def searchCoin(splits):
     for split in splits:
         if split != splits[0] and not split.__contains__('-'):
-            print(split)
             main.activeCoins.append(split)
     data.searchCoin(main.activeCoins, main.currency)
 
@@ -61,8 +83,6 @@ def manageCurrency(splits):
                     print('Changed primary currency to', main.currency)
             else:
                 print('Invalid syntax, proper usage:', cmd, commands_Dict[cmd]['Help'])
-
-
 
 
 def validateCommand():
@@ -95,7 +115,12 @@ def commands():
         if (cmd == '-currency'):
             if(validateCommand()):
                 manageCurrency(splits)
-
+        if (cmd == '-info'):
+            if(validateCommand()):
+                coinInfo(splits)
+        if (cmd == '-watch'):
+            if(validateCommand()):
+                watch(splits)
     else:
         print('Command', command, 'does not exist\n')
     waitCommand()
