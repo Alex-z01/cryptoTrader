@@ -1,10 +1,9 @@
-import requests
-import plotly
+import requests # will need
 import os
 import threading
 import pycoingecko as pcg
-from datetime import datetime
-from pandas import DataFrame as df
+from datetime import datetime # might need
+from pandas import DataFrame as df # will need
 import main
 
 #coinRoute = requests.post('https://portal.coinroutes.com/api/cost_calculator/', headers={'Authorization':'TOKEN 6c634e1eacecc4801b000249287fbf923d5c8824'})
