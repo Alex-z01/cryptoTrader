@@ -2,6 +2,7 @@ import requests # will need
 import os
 import threading
 import pycoingecko as pcg
+import calc
 from datetime import datetime # might need
 from pandas import DataFrame as df # will need
 import main
@@ -9,9 +10,15 @@ import main
 #coinRoute = requests.post('https://portal.coinroutes.com/api/cost_calculator/', headers={'Authorization':'TOKEN 6c634e1eacecc4801b000249287fbf923d5c8824'})
 gecko = pcg.CoinGeckoAPI()
 
+#print(coinRoute.text)
 
 #View all coins
 #print(gecko.get_coins_list())
+
+def checkPair(pairs):
+    for pair in pairs:
+        calc.pair = pair
+        calc.initRun()
 
 def watch(id):
     threading.Timer(3, watch, [id]).start()

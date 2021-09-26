@@ -32,6 +32,13 @@ commands_Dict = {
         'SUBS': {},
         'Help': '[coinID]'
     },
+    '-pair':{
+        'Desc': 'View buy and sell cost of pair across multiple exchanges',
+        'minArgs': 1,
+        'maxArgs': 5,
+        'SUBS': {},
+        'Help': '[pairID]'
+    },
     '-info':{
         'Desc': 'Get coin specific info.',
         'minArgs': 1,
@@ -47,6 +54,10 @@ commands_Dict = {
         'Help': '-help'
     }
 }
+
+def checkPair(splits):
+    splits.remove(splits[0])
+    data.checkPair(splits)
 
 def watch(splits):
     for split in splits:
@@ -121,6 +132,9 @@ def commands():
         if (cmd == '-watch'):
             if(validateCommand()):
                 watch(splits)
+        if (cmd == '-pair'):
+            if(validateCommand()):
+                checkPair(splits)
     else:
         print('Command', command, 'does not exist\n')
     waitCommand()
